@@ -172,7 +172,7 @@ object Runner {
       os.walk(benchmarkDir)
         .filter(_.last.matches(".*.csv"))
         .foreach { csv =>
-          print(s"Uploading benchmark data from $csv")
+          println(s"Uploading benchmark data from $csv")
           val reader = new FileReader(csv.toIO)
           copyManager.copyIn("""copy benchmark_results from stdin with csv header quote '"'""", reader)
         }

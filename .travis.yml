@@ -13,7 +13,7 @@ before_install:
 script:
   - curl -L -o ~/bin/mill https://github.com/lihaoyi/mill/releases/download/0.3.6/0.3.6 && chmod +x ~/bin/mill
   - export PATH=~/bin/mill:$PATH
-  - ./benchmark-inc.sh --inc-start-sha 3e67760cd9d5cd0c8238432d4e3e97290b74361c --inc-end-sha ddc7dd7b59b199cfe18840fea055eda6f5057b65
+  - ./benchmark-inc.sh --inc-start-sha 3e67760cd9d5cd0c8238432d4e3e97290b74361c
 
 cache:
   directories:
