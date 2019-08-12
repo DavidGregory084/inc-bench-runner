@@ -29,7 +29,6 @@ runBenchmarkForRevRange() {
     fi
 }
 
-POSITIONAL=()
 while [[ $# -gt 0 ]]; do
     key="$1"
 
@@ -50,13 +49,11 @@ while [[ $# -gt 0 ]]; do
         shift # past value
         ;;
         *)    # unknown option
-        POSITIONAL+=("$1") # save it in an array for later
         shift # past argument
+        shift
         ;;
     esac
 done
-
-set -- "${POSITIONAL[@]}" # restore positional parameters
 
 (cd "$runnerDir" && mill -i "runner.assembly")
 
