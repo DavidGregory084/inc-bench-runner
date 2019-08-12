@@ -62,5 +62,5 @@ git clone https://github.com/DavidGregory084/inc.git "$benchRepoDir"
 
 runBenchmarkForRevRange
 
-# rm -rf "$incRepoDir"
-# rm -rf "$benchRepoDir"
+rm -rf "$incRepoDir"
+rm -rf "$benchRepoDir"

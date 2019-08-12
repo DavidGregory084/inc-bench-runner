@@ -55,6 +55,7 @@ object Runner {
     parser.parse(args, ()).foreach { _ =>
       runBenchmark(incDir, benchmarkDir)
       writeBenchmarkCsv(benchmarkDir)
+      publishBenchmarkCsv(benchmarkDir)
     }
   }
 
@@ -106,11 +107,7 @@ object Runner {
         s"--export-json",
         s"${benchmarkDir / src.baseName}.json",
         s"java -jar ${assemblyJar} ${src}"
-      ).stream(
-        cwd = benchmarkDir,
-        onOut = (buf, len) => println(new String(buf.slice(0, len))),
-        onErr= (buf, len) => println(new String(buf.slice(0, len)))
-      )
+      ).call(benchmarkDir)
 
       addRunData(src.baseName, executionTime)
     }
