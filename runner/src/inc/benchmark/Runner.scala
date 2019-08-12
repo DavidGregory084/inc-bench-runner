@@ -103,7 +103,6 @@ object Runner {
 
       os.proc(
         'hyperfine,
-        s"--show-output",
         s"--export-json",
         s"${benchmarkDir / src.baseName}.json",
         s"java -jar ${assemblyJar} ${src}"
