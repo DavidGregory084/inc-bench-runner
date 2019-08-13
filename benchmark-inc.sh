@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-scriptDir=$(dirname "$0")
+scriptDir=$(dirname $(readlink -f "$0"))
 runnerDir="${scriptDir}/runner"
 incRepoDir="${scriptDir}/inc-repo"
 benchRepoDir="${scriptDir}/bench-repo"
@@ -10,20 +10,20 @@ incStartSha="HEAD"
 incEndSha="HEAD"
 
 runBenchmark() {
-    java -jar $(readlink -f "$runnerDir/out/runner/assembly/dest/out.jar") \
-      --inc-repo-dir $(readlink -f "$incRepoDir") \
-      --benchmark-dir $(readlink -f "$benchRepoDir/bench")
+    java -jar "$runnerDir/out/runner/assembly/dest/out.jar" \
+      --inc-repo-dir "$incRepoDir" \
+      --benchmark-dir "$benchRepoDir/bench"
 }
 
 runBenchmarkForRevRange() {
     git clone https://github.com/DavidGregory084/inc.git "$incRepoDir"
 
     if [ "$incStartSha" == "$incEndSha" ]; then
-        (cd "$incRepoDir" && git reset --hard "$incStartSha" && mill --disable-ticker -i "main.assembly")
+        (cd "$incRepoDir" && git reset --hard "$incStartSha" && "${scriptDir}/mill" --disable-ticker -i "main.assembly")
         runBenchmark
     else
         (cd "$incRepoDir" && git rev-list --first-parent --reverse "${incStartSha}^..${incEndSha}") | while read -r rev; do
-            (cd "$incRepoDir" && git reset --hard "$rev" && mill -i --disable-ticker "main.assembly")
+            (cd "$incRepoDir" && git reset --hard "$rev" && "${scriptDir}/mill" -i --disable-ticker "main.assembly")
             runBenchmark
         done
     fi
@@ -55,7 +55,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-(cd "$runnerDir" && mill -i --disable-ticker "runner.assembly")
+(cd "$runnerDir" && "${scriptDir}/mill" -i --disable-ticker "runner.assembly")
 
 git clone https://github.com/DavidGregory084/inc.git "$benchRepoDir"
 (cd "$benchRepoDir" && git reset --hard "$benchmarkSha")
