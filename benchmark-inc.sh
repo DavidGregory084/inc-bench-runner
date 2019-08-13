@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-scriptDir=$(dirname "$0")
+scriptDir=$(dirname $(readlink -f "$0"))
 runnerDir="${scriptDir}/runner"
 incRepoDir="${scriptDir}/inc-repo"
 benchRepoDir="${scriptDir}/bench-repo"
@@ -10,9 +10,9 @@ incStartSha="HEAD"
 incEndSha="HEAD"
 
 runBenchmark() {
-    java -jar $(readlink -f "$runnerDir/out/runner/assembly/dest/out.jar") \
-      --inc-repo-dir $(readlink -f "$incRepoDir") \
-      --benchmark-dir $(readlink -f "$benchRepoDir/bench")
+    java -jar "$runnerDir/out/runner/assembly/dest/out.jar" \
+      --inc-repo-dir "$incRepoDir" \
+      --benchmark-dir "$benchRepoDir/bench"
 }
 
 runBenchmarkForRevRange() {
