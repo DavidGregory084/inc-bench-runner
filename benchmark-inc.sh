@@ -19,7 +19,7 @@ runBenchmarkForRevRange() {
     git clone https://github.com/DavidGregory084/inc.git "$incRepoDir"
 
     if [ "$incStartSha" == "$incEndSha" ]; then
-        (cd "$incRepoDir" && git reset --hard "$incStartSha" && "${scriptDir}/mill" --disable-ticker -i "main.assembly")
+        (cd "$incRepoDir" && git reset --hard "$incStartSha" && "${scriptDir}/mill" -i --disable-ticker "main.assembly")
         runBenchmark
     else
         (cd "$incRepoDir" && git rev-list --first-parent --reverse "${incStartSha}^..${incEndSha}") | while read -r rev; do
